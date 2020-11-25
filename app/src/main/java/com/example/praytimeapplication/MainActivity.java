@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     Receiver receiver;
     final static int REQ_CODE = 1;
     private NotificationManagerCompat notificationManager;
+    private static boolean silentpref;
+    AudioManager am;
 
       double latitude;
       double longitude;
@@ -98,6 +101,14 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("Pray Time");
 
                 }
+                if(silentpref)
+                    if((currentTimeH == prayTimeH) && (currentTimeM == prayTimeM + 1))
+                            am.setRingerMode(1);
+
+                if(silentpref)
+                    if((currentTimeH == prayTimeH) && (currentTimeM >= prayTimeM + 30) )
+                             am.setRingerMode(2);
+
             }
         }
     }
@@ -130,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
          eishaTextView = (TextView) findViewById((R.id.eishaTextView));
          settingsImageView = (ImageView) findViewById((R.id.settingsImageView));
         cityTextView = (TextView) findViewById(R.id.cityTextView);
+        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
 
         settingsImageView.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     public void cityName(double latitude, double longitude) throws IOException {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
@@ -222,6 +235,14 @@ public class MainActivity extends AppCompatActivity {
         aserTextView.setText("Asr - "+prayTimes.get(3));
         maghrebTextView.setText("Maghrib - "+prayTimes.get(5));
         eishaTextView.setText("Isha - "+prayTimes.get(6));
+    }
+
+    public boolean isSilentpref() {
+        return silentpref;
+    }
+
+    public static void setSilentpref(boolean silent) {
+        silentpref = silent;
     }
 
     @Override

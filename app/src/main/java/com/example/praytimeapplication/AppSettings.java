@@ -30,12 +30,14 @@ public class AppSettings extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (silesntSwitch.isChecked()) {
                     // The toggle is enabled
+                    MainActivity.setSilentpref(true);
                     SharedPreferences.Editor editor = getSharedPreferences("save", MODE_PRIVATE).edit();
                     editor.putBoolean("value",true);
                     editor.apply();
                     silesntSwitch.setChecked(true);
                 } else {
                     // The toggle is disabled
+                    MainActivity.setSilentpref(false);
                     SharedPreferences.Editor editor = getSharedPreferences("save", MODE_PRIVATE).edit();
                     editor.putBoolean("value",false);
                     editor.apply();
