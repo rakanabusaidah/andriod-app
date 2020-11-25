@@ -9,6 +9,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     static PrayTime pt = new PrayTime();
     Intent serviceStartIntent;
     Receiver receiver;
+    final static int REQ_CODE = 1;
     private NotificationManagerCompat notificationManager;
 
       double latitude;
@@ -128,6 +131,15 @@ public class MainActivity extends AppCompatActivity {
          settingsImageView = (ImageView) findViewById((R.id.settingsImageView));
         cityTextView = (TextView) findViewById(R.id.cityTextView);
 
+
+        settingsImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), AppSettings.class);
+                startActivityForResult(intent, REQ_CODE);
+            }
+        });
+
         notificationManager = NotificationManagerCompat.from(this);
 
 
@@ -160,6 +172,16 @@ public class MainActivity extends AppCompatActivity {
             startService(serviceStartIntent);
         }
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if (requestCode == REQ_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(getBaseContext(), "Setting Saved", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void sendOnChannel1(String i){

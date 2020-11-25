@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AppSettings"
+    android:background="#52CC7A02">
+
+    <TextView
+        android:id="@+id/settingsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SETTINGS"
+        android:textColor="#9A5C02"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+         />
+
+    <TextView
+        android:id="@+id/RingingtextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#9A5C02"
+        android:textSize="21sp" />
+
+    <Switch
+        android:id="@+id/silentSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Silent Mode while it is prayer time"
+        android:textColor="#9A5C02"
+        android:textSize="21sp"/>
+
+    <TextView
+        android:id="@+id/switchDis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The phone is going to be silent during Prayer Time"
+        android:textSize="13sp"/>
+
+    <Button
+        android:id="@+id/buttonSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:textStyle="bold"
+        android:textColor="#9A5C02"/>
+
+</LinearLayout>
