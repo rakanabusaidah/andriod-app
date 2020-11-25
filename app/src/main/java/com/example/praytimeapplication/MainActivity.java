@@ -11,11 +11,13 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -161,9 +163,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendOnChannel1(String i){
+        Intent activityIntent = new Intent(this,MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,
+                0, activityIntent, 0);
+
+        Intent broadcastIntent = new Intent(this, NotificationReceiver.class);
+        broadcastIntent.putExtra("toastMessage","Prayer Time");
+        PendingIntent actionIntent = PendingIntent.getBroadcast(this, 0
+                , broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+
                 .setContentTitle(i + " Prayer Time")
                 .setSmallIcon(R.drawable.ic_one)
+                .setContentIntent(contentIntent)
+                .addAction(R.mipmap.ic_launcher, "Toast", actionIntent)
+                .setColor(Color.RED)
+                .setAutoCancel(true)
                 .build();
 
         notificationManager.notify(1, notification);

@@ -27,7 +27,7 @@
                 <action android:name="android.intent.action.DATE_CHANGED"></action>
             </intent-filter>
         </activity>
-
+        <receiver android:name="NotificationReceiver" />
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
