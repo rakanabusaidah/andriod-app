@@ -9,19 +9,34 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Switch;
+
+import static java.lang.Integer.parseInt;
 
 public class AppSettings extends AppCompatActivity {
     Button done;
     Switch silesntSwitch;
-
+    EditText editTextMinutes;
+    int sm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        editTextMinutes = (EditText) findViewById(R.id.editTextMinutes);
+        try {
 
+        // throws an exception when editTextMinuts in null :(
+        if(editTextMinutes.getText() != null){
+
+            sm = Integer.parseInt(String.valueOf(editTextMinutes.getText()));
+            MainActivity.setSilentMinutes(sm);
+        }
+        } catch (NullPointerException e){
+            MainActivity.setSilentMinutes(25);
+        }
         setContentView(R.layout.activity_app_settings);
         silesntSwitch = (Switch) findViewById(R.id.silentSwitch);
         SharedPreferences sharedPreferences = getSharedPreferences("save",MODE_PRIVATE);

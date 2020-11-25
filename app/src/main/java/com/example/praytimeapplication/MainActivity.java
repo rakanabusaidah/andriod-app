@@ -25,6 +25,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     private NotificationManagerCompat notificationManager;
     private static boolean silentpref;
     AudioManager am;
+
+
+    private static int silentMinutes = 25;
 
       double latitude;
       double longitude;
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                             am.setRingerMode(1);
 
                 if(silentpref)
-                    if((currentTimeH == prayTimeH) && (currentTimeM >= prayTimeM + 30) )
+                    if((currentTimeH == prayTimeH) && (currentTimeM >= prayTimeM + silentMinutes) )
                              am.setRingerMode(2);
 
             }
@@ -243,6 +247,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static void setSilentpref(boolean silent) {
         silentpref = silent;
+    }
+
+    public int getSilentMinutes() {
+        return silentMinutes;
+    }
+
+    public static void setSilentMinutes(int sm) {
+        silentMinutes = sm;
     }
 
     @Override

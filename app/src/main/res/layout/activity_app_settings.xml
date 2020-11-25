@@ -34,12 +34,20 @@
         android:textColor="#9A5C02"
         android:textSize="21sp"/>
 
+    <EditText
+        android:id="@+id/editTextMinutes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="For how many minutes (Defult:  25)"
+        android:inputType="numberSigned"
+        android:isScrollContainer="false" />
+
     <TextView
         android:id="@+id/switchDis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="The phone is going to be silent during Prayer Time"
-        android:textSize="13sp"/>
+        android:textSize="13sp" />
 
     <Button
         android:id="@+id/buttonSettings"
