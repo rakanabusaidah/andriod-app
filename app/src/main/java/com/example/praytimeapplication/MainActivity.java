@@ -179,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
                 .setContentIntent(contentIntent)
                 .addAction(R.mipmap.ic_launcher, "Toast", actionIntent)
                 .setColor(Color.RED)
-                .setAutoCancel(true)
                 .build();
 
         notificationManager.notify(1, notification);
