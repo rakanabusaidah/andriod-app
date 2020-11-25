@@ -4,9 +4,13 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +20,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static com.example.praytimeapplication.PrayersNotifications.CHANNEL_1_ID;
 
 public class MainActivity extends AppCompatActivity {
     static TextView fajerTextView;
@@ -38,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     static PrayTime pt = new PrayTime();
     Intent serviceStartIntent;
     Receiver receiver;
+    private NotificationManagerCompat notificationManager;
 
       double latitude;
       double longitude;
@@ -57,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 latitude = intent.getDoubleExtra("latitude",0.0);
                 longitude = intent.getDoubleExtra("longitude",0.0);
             }
+
             try {
                 cityName(latitude,longitude);
             } catch (IOException e) {
@@ -79,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(formatter.format(date)+"      CURRENT TIME:"+currentTimeH+" "+currentTimeM+"      PRAY TIME:"+prayTimeH+"  "+prayTimeM);
 
                 if( (currentTimeH == prayTimeH) && (currentTimeM == prayTimeM) ){
-                    //Do notification here
+                    sendOnChannel1();
                     System.out.println("Pray Time");
 
                 }
@@ -116,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
          settingsImageView = (ImageView) findViewById((R.id.settingsImageView));
         cityTextView = (TextView) findViewById(R.id.cityTextView);
 
+        notificationManager = NotificationManagerCompat.from(this);
+
 
          //broadCastReciver
         receiver = new Receiver();
@@ -145,6 +156,16 @@ public class MainActivity extends AppCompatActivity {
             serviceStartIntent = new Intent(getApplicationContext(), LocationAndTimeService.class);
             startService(serviceStartIntent);
         }
+
+    }
+
+    public void sendOnChannel1(){
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setContentTitle("Prayer Time")
+                .build();
+
+        notificationManager.notify(1, notification);
+
 
     }
     public void cityName(double latitude, double longitude) throws IOException {
