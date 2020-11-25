@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
             double currentTimeM = Double.parseDouble(formatter.format(date).substring(3,5));
             double prayTimeH;
             double prayTimeM;
+            String [] PrayrtName = {"Fajar", "Sunrise", "Dhuhr", "Asr", "Maghrib","Maghrib", "Isha"};
 
             for(int i=0; i<prayTimes.size();i++){
                 prayTimeH = Double.parseDouble(prayTimes.get(i).substring(0,2));
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(formatter.format(date)+"      CURRENT TIME:"+currentTimeH+" "+currentTimeM+"      PRAY TIME:"+prayTimeH+"  "+prayTimeM);
 
                 if( (currentTimeH == prayTimeH) && (currentTimeM == prayTimeM) ){
-                    sendOnChannel1();
+                    sendOnChannel1(PrayrtName[i]);
                     System.out.println("Pray Time");
 
                 }
@@ -159,9 +160,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void sendOnChannel1(){
+    public void sendOnChannel1(String i){
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
-                .setContentTitle("Prayer Time")
+                .setContentTitle(i + " Prayer Time")
+                .setSmallIcon(R.drawable.ic_one)
                 .build();
 
         notificationManager.notify(1, notification);
