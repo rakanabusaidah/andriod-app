@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
@@ -17,6 +16,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -29,7 +29,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,11 +52,12 @@ public class MainActivity extends AppCompatActivity {
     Receiver receiver;
     final static int REQ_CODE = 1;
     private NotificationManagerCompat notificationManager;
-    private static boolean silentpref;
+     boolean silentpref;
     AudioManager am;
+    SharedPreferences sp;
 
 
-    private static int silentMinutes = 25;
+     int silentMinutes = 25;
 
       double latitude;
       double longitude;
@@ -146,7 +146,10 @@ public class MainActivity extends AppCompatActivity {
          settingsImageView = (ImageView) findViewById((R.id.settingsImageView));
         cityTextView = (TextView) findViewById(R.id.cityTextView);
         am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
+        sp = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        silentpref = sp.getBoolean("silent",false);
+        silentMinutes = sp.getInt("ms",0);
+        notificationManager = NotificationManagerCompat.from(this);
 
         settingsImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        notificationManager = NotificationManagerCompat.from(this);
+
 
 
          //broadCastReciver
@@ -192,10 +195,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        SharedPreferences.Editor editor = sp.edit();
         // check if the request code is same as what is passed  here it is 2
         if (requestCode == REQ_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Toast.makeText(getBaseContext(), "Setting Saved", Toast.LENGTH_SHORT).show();
+                editor.putBoolean("silent",data.getBooleanExtra("check",false));
+                editor.putInt("ms",data.getIntExtra("ms",0));
+                silentpref = data.getBooleanExtra("check",false);
+                silentMinutes = data.getIntExtra("ms",0);
+                editor.commit();
             }
         }
     }
@@ -245,17 +255,7 @@ public class MainActivity extends AppCompatActivity {
         return silentpref;
     }
 
-    public static void setSilentpref(boolean silent) {
-        silentpref = silent;
-    }
 
-    public int getSilentMinutes() {
-        return silentMinutes;
-    }
-
-    public static void setSilentMinutes(int sm) {
-        silentMinutes = sm;
-    }
 
     @Override
     protected void onDestroy() {
