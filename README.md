@@ -13,5 +13,5 @@ PrayTimes.org
 
 ### Team Members
 
-Rakan Abusaidah
+Rakan Abusaidah,
 Abdulaziz Alghazi
